@@ -160,7 +160,7 @@ pip install tensorrt==10.0 triton-inference-server==24.01
 # Run benchmark
 cd src/task_a_unifolm
 python inference/benchmark.py --config configs/optimized.yaml
-
+```
 ### Task  B
 # Compile optimized version
 cd src/task_b_amss
@@ -169,7 +169,7 @@ make -f compile/Makefile.asc26
 
 # Submit job
 qsub jobs/gw150914_1000s.pbs
-
+```
 📫 Contact
 Team Zero Point, CQUPT
 
