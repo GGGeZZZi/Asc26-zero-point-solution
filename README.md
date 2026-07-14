@@ -106,7 +106,22 @@ Our motto: **"From Zero, Everything"** - we started with curiosity, not experien
 **Advisor**: Wu Hong
 
 ## 📚 Repository Structure
-unifolm-wma-inference-acceleration/ ├── README.md # This file ├── LICENSE # Apache 2.0 ├── ASC1548-...pdf # ASC26 Competition Proposal (93 pages) ├── paper/ # (coming soon) Technical reports ├── src/ # Source code │ ├── task_a_unifolm/ # Task A: World model optimization │ │ ├── optimizations/ # 6 optimization modules │ │ │ ├── sampling.py # DDIM step reduction │ │ │ ├── fused_kernels.cu # Custom CUDA kernels │ │ │ ├── async_pipeline.py │ │ │ ├── mixed_precision.py │ │ │ ├── kv_cache.py │ │ │ ├── cuda_graphs.py │ │ │ └── sparse_attention.py │ │ └── inference/ # Inference pipeline │ └── task_b_amss/ # Task B: Numerical relativity │ ├── src/ # Modified C++/Fortran code │ ├── compile/ # Compilation scripts │ └── jobs/ # PBS job scripts ├── benchmarks/ # Performance benchmarks │ ├── task_a/ # Task A results │ └── task_b/ # Task B results ├── docs/ # Documentation │ ├── JOURNAL.md # Project journal │ ├── architecture.md # System architecture │ └── lessons_learned.md # What we learned └── notebooks/ # Tutorial notebooks
+unifolm-wma-inference-acceleration/
+├── README.md                    # This file
+├── LICENSE                       # Apache 2.0
+├── ASC1548-...pdf              # ASC26 Competition Proposal
+├── paper/                        # (coming soon)
+├── src/                          # Source code
+│   ├── task_a_unifolm/          
+│   │   ├── optimizations/       
+│   │   │   ├── sampling.py      
+│   │   │   ├── fused_kernels.cu
+│   │   │   └── ...
+│   │   └── inference/           
+│   └── task_b_amss/             
+├── benchmarks/                   
+├── docs/                        
+└── notebooks/                   
 
 
 ## 📖 Documentation
