@@ -106,4 +106,67 @@ Our motto: **"From Zero, Everything"** - we started with curiosity, not experien
 **Advisor**: Wu Hong
 
 ## 📚 Repository Structure
+unifolm-wma-inference-acceleration/ ├── README.md # This file ├── LICENSE # Apache 2.0 ├── ASC1548-...pdf # ASC26 Competition Proposal (93 pages) ├── paper/ # (coming soon) Technical reports ├── src/ # Source code │ ├── task_a_unifolm/ # Task A: World model optimization │ │ ├── optimizations/ # 6 optimization modules │ │ │ ├── sampling.py # DDIM step reduction │ │ │ ├── fused_kernels.cu # Custom CUDA kernels │ │ │ ├── async_pipeline.py │ │ │ ├── mixed_precision.py │ │ │ ├── kv_cache.py │ │ │ ├── cuda_graphs.py │ │ │ └── sparse_attention.py │ │ └── inference/ # Inference pipeline │ └── task_b_amss/ # Task B: Numerical relativity │ ├── src/ # Modified C++/Fortran code │ ├── compile/ # Compilation scripts │ └── jobs/ # PBS job scripts ├── benchmarks/ # Performance benchmarks │ ├── task_a/ # Task A results │ └── task_b/ # Task B results ├── docs/ # Documentation │ ├── JOURNAL.md # Project journal │ ├── architecture.md # System architecture │ └── lessons_learned.md # What we learned └── notebooks/ # Tutorial notebooks
 
+
+## 📖 Documentation
+
+- 📑 [ASC26 Competition Proposal (93 pages)](ASC1548-8b9b01cf-3ce0-af82-7130-d6fedcb7a6c9.pdf)
+- 📝 [Project Journal](docs/JOURNAL.md) (coming soon)
+- 🏗️ [Architecture Overview](docs/architecture.md) (coming soon)
+- 💡 [Lessons Learned](docs/lessons_learned.md) (coming soon)
+
+## 🎓 Lessons Learned
+
+### What Worked ✅
+- **Systematic profiling first** - Nsight Systems revealed real bottlenecks
+- **Layered optimizations** - Multiple techniques compound effectively
+- **Quality preservation** - PSNR drop of only 0.13 across all 20 samples
+- **Hardware adaptation** - Optimized for AMD GPU, not just NVIDIA
+
+### What Didn't Work ❌ (But Taught Us)
+- **CSAMR (Advanced Algorithm)**: 1 hour → 0.7s physical time on 16 cores
+  - Lesson: "Advanced" algorithms need matching hardware (paper used 128+ cores)
+- **-Os Size Optimization**: Slightly worse than -O2
+  - Lesson: Numerical code benefits from -O2 + -flto
+- **Intel MKL Replacement**: Performance degraded
+  - Lesson: Not all workloads benefit from MKL (AMR ≠ dense linear algebra)
+- **PGO (Profile-Guided Optimization)**: Compilation failed
+  - Lesson: GCC 4.8.5 PGO support is limited
+
+## 🔧 Reproducibility
+
+### Task A
+```bash
+# Install dependencies
+pip install torch==2.4.0 torchvision==0.19.0
+pip install tensorrt==10.0 triton-inference-server==24.01
+
+# Run benchmark
+cd src/task_a_unifolm
+python inference/benchmark.py --config configs/optimized.yaml
+
+### Task  B
+# Compile optimized version
+cd src/task_b_amss
+source compile/setup_env.sh
+make -f compile/Makefile.asc26
+
+# Submit job
+qsub jobs/gw150914_1000s.pbs
+
+📫 Contact
+Team Zero Point, CQUPT
+
+📧 Primary contact: Zhu kangrui 2498786739@qq.com
+🏫 School of Electronic and Information Engineering
+📍 Chongqing University of Posts and Telecommunications
+📄 License
+This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
+
+🙏 Acknowledgments
+CQUPT Supercomputing Center for providing AMD GPU cluster access
+Unitree Robotics for the UnifoLM-WMA-0 model and competition
+ASC26 Organizers for the competition platform
+Advisor Wu Hong for guidance and support
+All CQUPT faculty who supported our team
