@@ -162,6 +162,7 @@ cd src/task_a_unifolm
 python inference/benchmark.py --config configs/optimized.yaml
 ```
 ### Task  B
+```bash
 # Compile optimized version
 cd src/task_b_amss
 source compile/setup_env.sh
