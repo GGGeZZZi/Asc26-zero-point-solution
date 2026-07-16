@@ -1,0 +1,69 @@
+🚀 From Zero Experience to ASC26 2nd Prize: Our Dual-Track Breakthrough and Personal Growth
+Team: Zero Point, Chongqing University of Posts and Telecommunications (CQUPT)
+Members: Ni Yankuo, Wang Yujie, Guo Xiangjun, Zhou Chenyang, Zhu Kangrui
+Competition: ASC26 World Student Supercomputer Challenge
+Achievement: National 2nd Prize
+🌱 Prologue: The "Audacity" and Dreams of Freshmen
+In early 2025, five freshmen from the School of Electronic Information Engineering at CQUPT formed the "Zero Point" team. Brought together by our school's project opportunities and a shared interest in quantum computing under the guidance of our mentor, we had never even touched an HPC cluster, let alone understood Einstein's field equations or CUDA programming.
+When we saw the ASC26 competition topics, our instinct told us this would be an extreme test of translating theory into engineering. The competition offered two seemingly unrelated tracks:
+Track A: Optimize the Unitree robot world model (GPU/AI direction).
+Track B: Optimize the AMSS-NCKU gravitational-wave simulation (CPU/HPC direction).
+Our mentor initially gave us a reality check: "Let's be clear: this first year is just for practice. We'll participate every year, aiming to win a prize in our junior or senior year." But eager to seize the opportunity, we made a bold decision: compete in both tracks simultaneously. This was not just a test of our technical skills, but an experiment to see how much value a "zero-experience" team could create. Our motto: "From Zero, Everything is Possible."
+🤖 Track A: A 7.77× Speedup in Robot "Mental Rehearsal"
+Lead: Team Collaboration (AI Optimization Group)
+Core Achievement: Inference time reduced from 588 seconds (nearly 10 minutes) to 75.68 seconds, achieving a 7.77× speedup.
+1. The Dilemma: Optimization Space Locked by Rules
+Unitree's UniFM-WMA-0 model is responsible for the robot's "mental rehearsal" (video prediction). Initial tests were disheartening: a single sample took nearly 10 minutes to infer. To make matters worse, the competition rules strictly prohibited modifying core files or using quantization below 16-bit. We had to find a way to survive in the cracks.
+2. The Breakthrough: A Six-Layer Optimization "Combo"
+Instead of relying on a single silver bullet, we used systematic engineering to stack six complementary optimizations, like building blocks:
+表格
+Step	Optimization	Speedup	Technical Insight
+| 1	| DDIM Step Reduction (50→20)	2.50×	Leveraged information theory; large step jumps at η=0 do not compromise quality.
+| 2 | Operator Fusion + Custom CUDA | 1.33× | Hand-coded fused_kernels.cu, reducing kernel launches from 2,847 to 892. |
+| 3 | Asynchronous Pipeline | 1.18× | Used 3 CUDA Streams to overlap CPU loading and GPU computing, boosting utilization to 94%. |
+| 4 | Mixed Precision (FP16) | 1.43× | Unlocked the potential of AMD GPU matrix units, paired with channels_last format. |
+| 5 | KV Cache + Sparse Attention | 1.25× | Targeted robot motion characteristics (local + periodic), reducing FLOPs by 54%. |
+| 6 | CUDA Graph Capture | 1.11× | Eliminated 99.9% of kernel launch overhead, enabling "replay-style" inference. |
+Final Validation: Across 20 test samples, the PSNR consistently remained above 25.67 (far exceeding the requirement of 25), with virtually no discernible difference in visual quality.
+🌌 Track B: Solitude and Epiphanies in Gravitational-Wave Simulation
+Lead: Task B Specialist (Personal Perspective)
+Core Achievement: Simulation speed increased by 2.59×, reducing the time for a 1000-second physical simulation from an estimated 157 hours to 32.8 hours.
+1. The Darkest Hour: Environment Setup "Dropout"
+When we received the topic, I was completely overwhelmed by Einstein's field equations and Adaptive Mesh Refinement (AMR). The real blow came from setting up the environment:
+The university's supercomputer was outdated, running only GCC 4.8.5, unsupported by many modern libraries.
+We needed to statically compile Python 3.8.18, and the supercomputer had no internet access.
+The Breaking Point: I downloaded packages on a virtual machine and transferred them via scp, only to be constantly plagued by libgfortran version mismatches and MATLAB library paths polluting environment variables.
+The Breakthrough: After two days of relentless troubleshooting—uninstalling conflicting libraries, manually setting LD_LIBRARY_PATH, and using rpath to hardcode library paths into executables—I finally ran the first "Hello World." This experience gave me a transformative understanding of Linux internals.
+2. Exploration: Finding the 16-Core "Sweet Spot"
+During benchmark testing, I discovered a counterintuitive phenomenon: more cores are not always better.
+4 cores took 120 minutes to simulate 10 seconds of physical time.
+When I tested 24 cores, performance was actually worse than 16 cores!
+The Epiphany: Research revealed this was due to memory bandwidth saturation. The growth in communication overhead canceled out parallelization gains. This was my first true understanding of the "boundaries of parallel computing."
+3. Failure: The CSAMR Algorithm "Waterloo"
+In pursuit of ultimate performance, I spent a week studying a 2016 top-tier conference paper, attempting to implement the CSAMR (Concurrent Adaptive Mesh Refinement) algorithm.
+The Disaster: After modifying the code and running a test, it only advanced 0.7 seconds of physical time per hour (the original algorithm did 1 second).
+The Reflection: CSAMR requires all levels to use the finest level's time step, causing an exponential explosion in coarse grid computation. This algorithm needs a massive 128+ core cluster to shine. With our limited 16-core resources, the classic Time-subcycling approach was the true king.
+The Takeaway: This failure taught me that "advanced" does not equal "applicable." Algorithms must match the hardware scale.
+4. The Surprise: The Unexpected Joy of -flto
+After trying -O3 (which slowed things down) and MKL (which caused performance regression), I casually tried Link Time Optimization (-flto).
+The Miracle: Adding just this single parameter boosted performance by about 7% (50.33 min → 46.8 min).
+In that moment, I felt all the previous errors and sleepless nights were worth it.
+5. The Wait: 32.8 Hours of Agony
+Finally, I submitted the full 1000-second simulation job. For two days, I refreshed qstat constantly, watching the progress bar inch forward like waiting for exam results. When I finally saw Total Time: 118170s and the constraint graphs perfectly met the standards, the sense of accomplishment was beyond words.
+💡 Conclusion: Failure is the Stepping Stone to Success
+We are incredibly honored to be recognized with the National 2nd Prize. I remember the results came out in February. I was sitting in a physics class that evening, casually browsing the list of winning teams with a calm mind, when I suddenly spotted a familiar name: ASC1548. That was us. Although we didn't make it to the finals, the result far exceeded our expectations and was truly delightful. We hope to break into the finals in the coming year!!!
+🍄 Our "Museum of Failures"
+Attempt	Result	Lesson Learned
+CSAMR Algorithm	Performance degradation	Under resource constraints, classic compromises (Subcycling) beat complex algorithms.
+-Oz Compilation	Slightly worse than -O2	Numerical computing benefits from loop unrolling, not just code size reduction.
+Intel MKL Replacement	Performance drop	Finite difference is not dense linear algebra; MKL's function call overhead became a burden.
+PGO Optimization	Compilation failure	Advanced features of older compilers (GCC 4.8.5) must be used with caution.
+Advice for Future Competitors
+Draw the bottleneck graph before touching the code: Let Nsight Systems or perf speak; don't guess.
+Embrace failure: The CSAMR failure taught us more about the AMR algorithm than any textbook could.
+Tools are the foundation: Learn to manage versions with Git and troubleshoot library dependencies in Linux. These are more important than the algorithms themselves.
+Team complementarity: Planning, kernel coding, documentation, and gatekeeping—everyone has their role. 
+1+1+1+1+1≫5 .
+Acknowledgments
+Thank you to the CQUPT Supercomputing Center, Unitree Robotics, the ASC26 Organizing Committee, and our mentor, Professor Wu Hong.
+We are freshmen. We are Zero Point, starting from zero. This journey proves that true breakthroughs stem from a clear understanding of bottlenecks and the courage to innovate systematically within constraints.
