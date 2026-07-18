@@ -1,37 +1,39 @@
-从零经验到ASC26二等奖：我们的双轨突破与个人成长
-团队：零点，重庆邮电大学（CQUPT）
-成员：倪彦阔、王宇杰、郭翔军、周晨阳、朱康瑞
-竞赛：ASC26 世界大学生超级计算机挑战赛
-成就：全国二等奖
-序章：“胆识”与新生的梦想
-2025年初，重庆邮电大学电子信息工程学院的五名大一新生组建了“零点”团队。在导师的指导下，我们因学校提供的项目机会以及对量子计算的共同兴趣而走到了一起。那时，我们连高性能计算集群都从未接触过，更别提理解爱因斯坦的场方程或进行CUDA编程了。
-当我们看到ASC26竞赛的题目时，直觉告诉我们，这将是对理论转化为工程实践的一次严峻考验。本次竞赛设置了两条看似毫不相关的赛道：
-赛道A：优化Unitree机器人世界模型（GPU/人工智能方向）。
-赛道B：优化AMSS-NCKU引力波模拟（CPU/HPC方向）。
-我们的导师一开始就给我们敲响了警钟：“说清楚一点：第一年只是练手。我们每年都会参赛，目标是在大三或大四那一年争取获奖。”但为了抓住这个机会，我们毅然做出了一个大胆的决定：同时参加两条赛道的角逐。这不仅是一次对我们技术能力的检验，更是一场旨在探索‘零经验’团队究竟能创造多少价值的实验。我们的口号是：‘从零开始，一切皆有可能。’
-赛道A：机器人“心理预演”速度提升7.77倍
-负责人：团队协作（AI优化组）
-核心成果：推理时间从588秒（近10分钟）缩短至75.68秒，实现7.77倍的加速。
-1. 困境：优化空间受规则约束
-Unitree公司的UniFM-WMA-0模型负责机器人的“心理预演”（视频预测）。初步测试结果令人沮丧：单次推理竟需近10分钟。更糟糕的是，比赛规则严格禁止修改核心文件，且不得使用低于16位的量化技术。我们必须在夹缝中找到生存之道。
-2. 突破：六层优化“组合拳”
-我们并未依赖单一的“万能解决方案”，而是通过系统化的工程方法，将六项相辅相成的优化措施像积木一样层层叠加：
+Here is the English translation of the retrospective, adapted for international platforms like LinkedIn, GitHub, or personal blogs.
+🚀 From Zero Experience to ASC26 2nd Prize: Our Dual-Track Breakthrough and Personal Growth
+Team: Zero Point, Chongqing University of Posts and Telecommunications (CQUPT)
+Members: Ni Yankuo, Wang Yujie, Guo Xiangjun, Zhou Chenyang, Zhu Kangrui
+Competition: ASC26 World Student Supercomputer Challenge
+Achievement: National 2nd Prize
+🌱 Prologue: The "Audacity" and Dreams of Freshmen
+In early 2025, five freshmen from the School of Electronic Information Engineering at CQUPT formed the "Zero Point" team. Brought together by our school's project opportunities and a shared interest in quantum computing under the guidance of our mentor, we had never even touched an HPC cluster, let alone understood Einstein's field equations or CUDA programming.
+When we saw the ASC26 competition topics, our instinct told us this would be an extreme test of translating theory into engineering. The competition offered two seemingly unrelated tracks:
+Track A: Optimize the Unitree robot world model (GPU/AI direction).
+Track B: Optimize the AMSS-NCKU gravitational-wave simulation (CPU/HPC direction).
+Our mentor initially gave us a reality check: "Let's be clear: this first year is just for practice. We'll participate every year, aiming to win a prize in our junior or senior year." But eager to seize the opportunity, we made a bold decision: compete in both tracks simultaneously. This was not just a test of our technical skills, but an experiment to see how much value a "zero-experience" team could create. Our motto: "From Zero, Everything is Possible."
+🤖 Track A: A 7.77× Speedup in Robot "Mental Rehearsal"
+Lead: Team Collaboration (AI Optimization Group)
+Core Achievement: Inference time reduced from 588 seconds (nearly 10 minutes) to 75.68 seconds, achieving a 7.77× speedup.
+1. The Dilemma: Optimization Space Locked by Rules
+Unitree's UniFM-WMA-0 model is responsible for the robot's "mental rehearsal" (video prediction). Initial tests were disheartening: a single sample took nearly 10 minutes to infer. To make matters worse, the competition rules strictly prohibited modifying core files or using quantization below 16-bit. We had to find a way to survive in the cracks.
+2. The Breakthrough: A Six-Layer Optimization "Combo"
+Instead of relying on a single silver bullet, we used systematic engineering to stack six complementary optimizations, like building blocks:
 表格
-步骤	优化	提速	技术洞察
-| 1	| DDIM 步长缩减（50→20）	2.50×	基于信息论；在 η=0 时的大步长跳跃不会影响模型质量。
-| 2 | 算子融合 + 自定义 CUDA | 1.33× | 手动编写 fused_kernels.cu，将内核启动次数从 2,847 次减少至 892 次。|
-| 3 | 异步流水线 | 1.18× | 使用了3个CUDA流来实现CPU加载与GPU计算的重叠，将利用率提升至94%。|
-| 4 | 混合精度（FP16） | 1.43× | 开启了AMD GPU矩阵单元的潜能，并搭配 channels_last 格式。|
-| 5 | KV缓存 + 稀疏注意力 | 1.25倍 | 针对性机器人运动特性（局部+周期性），FLOPs降低54%。|
-| 6 | CUDA 图形捕获 | 1.11× | 消除了 99.9% 的内核启动开销，实现了“重放式”推理。|
-最终验证：在20个测试样本中，峰值信噪比（PSNR）始终高于25.67（远超25的指标要求），且视觉质量几乎无明显差异。
-轨道B：引力波模拟中的孤独与顿悟
-负责人：任务B专家（个人视角）
-核心成果：仿真速度提升2.59倍，将1000秒的物理仿真时间从预计的157小时缩短至32.8小时。
-1. 最黑暗的时刻：环境搭建“Dropout”
-当我们接到这个课题时，我一下子就被爱因斯坦场方程和自适应网格细化（AMR）搞得不知所措。真正的挑战来自环境的搭建：
-该大学的超级计算机已显过时，仅运行 GCC 4.8.5，无法兼容许多现代库。
-我们需要静态编译 Python 3.8.18，而该超级计算机无法访问互联网。
+Step	Optimization	Speedup	Technical Insight
+1	DDIM Step Reduction (50→20)	2.50×	Leveraged information theory; large step jumps at 
+η=0 do not compromise quality.
+2	Operator Fusion + Custom CUDA	1.33×	Hand-coded fused_kernels.cu, reducing kernel launches from 2,847 to 892.
+3	Asynchronous Pipeline	1.18×	Used 3 CUDA Streams to overlap CPU loading and GPU computing, boosting utilization to 94%.
+4	Mixed Precision (FP16)	1.43×	Unlocked the potential of AMD GPU matrix units, paired with channels_last format.
+5	KV Cache + Sparse Attention	1.25×	Targeted robot motion characteristics (local + periodic), reducing FLOPs by 54%.
+6	CUDA Graph Capture	1.11×	Eliminated 99.9% of kernel launch overhead, enabling "replay-style" inference.
+Final Validation: Across 20 test samples, the PSNR consistently remained above 25.67 (far exceeding the requirement of 25), with virtually no discernible difference in visual quality.
+🌌 Track B: Solitude and Epiphanies in Gravitational-Wave Simulation
+Lead: Task B Specialist (Personal Perspective)
+Core Achievement: Simulation speed increased by 2.59×, reducing the time for a 1000-second physical simulation from an estimated 157 hours to 32.8 hours.
+1. The Darkest Hour: Environment Setup "Dropout"
+When we received the topic, I was completely overwhelmed by Einstein's field equations and Adaptive Mesh Refinement (AMR). The real blow came from setting up the environment:
+The university's supercomputer was outdated, running only GCC 4.8.5, unsupported by many modern libraries.
+We needed to statically compile Python 3.8.18, and the supercomputer had no internet access.
 The Breaking Point: I downloaded packages on a virtual machine and transferred them via scp, only to be constantly plagued by libgfortran version mismatches and MATLAB library paths polluting environment variables.
 The Breakthrough: After two days of relentless troubleshooting—uninstalling conflicting libraries, manually setting LD_LIBRARY_PATH, and using rpath to hardcode library paths into executables—I finally ran the first "Hello World." This experience gave me a transformative understanding of Linux internals.
 2. Exploration: Finding the 16-Core "Sweet Spot"
@@ -53,6 +55,7 @@ Finally, I submitted the full 1000-second simulation job. For two days, I refres
 💡 Conclusion: Failure is the Stepping Stone to Success
 We are incredibly honored to be recognized with the National 2nd Prize. I remember the results came out in February. I was sitting in a physics class that evening, casually browsing the list of winning teams with a calm mind, when I suddenly spotted a familiar name: ASC1548. That was us. Although we didn't make it to the finals, the result far exceeded our expectations and was truly delightful. We hope to break into the finals in the coming year!!!
 🍄 Our "Museum of Failures"
+Diagram
 Attempt	Result	Lesson Learned
 CSAMR Algorithm	Performance degradation	Under resource constraints, classic compromises (Subcycling) beat complex algorithms.
 -Oz Compilation	Slightly worse than -O2	Numerical computing benefits from loop unrolling, not just code size reduction.
